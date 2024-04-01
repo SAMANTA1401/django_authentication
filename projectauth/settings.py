@@ -9,6 +9,18 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import os 
+# import environ
+# env = environ.Env(
+#     # set casting, default value,  if DEBUG=True/On in .env then True otherwise False
+#     DEBUG=(bool, False)
+# )
+# # reading .env file
+# environ.Env.read_env()
+
+
+
+
 
 from pathlib import Path
 
@@ -26,7 +38,7 @@ SECRET_KEY = "django-insecure-3ghj!wp1wla5sj2tpk0l76-#5k80s&d7*4rytmj&9ngr)r4^!3
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = ['www.wondershop.in', 'services.wondershop.in', '127.0.0.1', 'admin.wondershop.in']
 
 # Application definition
 
@@ -37,6 +49,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "multiselectfield",
+    "rootapp",
+    "authapp",
+    # 'django_hosts',
 ]
 
 MIDDLEWARE = [
@@ -47,9 +63,16 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # 'django_hosts.middleware.HostsRequestMiddleware',
+    # 'django_hosts.middleware.HostsResponseMiddleware'
 ]
 
 ROOT_URLCONF = "projectauth.urls"
+
+ROOT_HOSTCONF = 'firstproject.hosts'
+DEFAULT_HOST = 'www'
+PARENT_HOST = 'wondershop.in'
+HOST_PORT = "8000"
 
 TEMPLATES = [
     {
@@ -141,8 +164,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+
+AUTH_USER_MODEL = 'rootapp.CustomUser'
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
+
+#SMTP SETTINGS
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER ='priyanshuguptacontact@gmail.com'
+# EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+# DEFAULT_FROM_EMAIL = 'Testing <priyanshuguptacontact@gmail.com>'
+
+#PASSWORD_RESET_TIMEOUT_DAYS = "7"
+
+# PAYMENT GATEWAY SETTINGS
+# razorpay_id = env('RAZORPAY_ID')
+# razorpay_account_id = env('razorpay_account_id')
